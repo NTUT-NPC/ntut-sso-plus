@@ -14,7 +14,7 @@ export default defineConfig({
     host_permissions: [
       "https://*.ntut.edu.tw/*",
     ],
-    homepage_url: "https://github.com/NTUT-NPC/ntut_sso_plus",
+    homepage_url: "https://github.com/NTUT-NPC/ntut-sso-plus",
     icons: {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",

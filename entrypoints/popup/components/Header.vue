@@ -28,7 +28,7 @@ const handleLogout = () => {
 
 <template>
   <header class="glass-card">
-    <a class="brand-wrapper" href="https://github.com/NTUT-NPC/ntut_sso_plus" target="_blank">
+    <a class="brand-wrapper" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank">
       <h3 class="brand-logo">NTUT SSO<span class="plus-sign">+</span></h3>
       <div class="npc-tag">v{{ browser.runtime.getManifest().version }} BY NPC</div>
     </a>
@@ -36,7 +36,7 @@ const handleLogout = () => {
       <a class="icon-btn" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
         <div class="icon portal"></div>
       </a>
-      <a class="icon-btn" href="https://github.com/NTUT-NPC/ntut_sso_plus" target="_blank" title="GitHub 專案">
+      <a class="icon-btn" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
         <div class="icon github"></div>
       </a>
       <button class="icon-btn" title="開啟分頁" @click="openInNewTab">
