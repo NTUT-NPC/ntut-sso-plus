@@ -79,6 +79,10 @@ header {
   margin-left: 2px;
 }
 
+:global(body[data-theme="dark"] .plus-sign) {
+  color: var(--accent);
+}
+
 .npc-tag {
   font-size: 9px;
   font-weight: 800;

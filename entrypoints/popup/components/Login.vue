@@ -135,6 +135,10 @@ const handleSave = async () => {
   color: var(--primary);
 }
 
+:global(body[data-theme="dark"] .plus-sign) {
+  color: var(--accent);
+}
+
 .login-subtitle {
   color: var(--text-sub);
   font-size: 14px;

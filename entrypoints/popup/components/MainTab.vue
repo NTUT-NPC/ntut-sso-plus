@@ -28,6 +28,55 @@ const handleSSO = (code: string) => {
 
 <template>
   <div id="service-container">
+    <div class="priority-section">
+      <div class="category-title">
+        <span>推薦服務</span>
+      </div>
+      
+      <!-- Big Hero Card for iStudy PLUS -->
+      <div class="hero-card" @click="handleSSO('ischool_plus_oauth')">
+        <div class="sub-card-content">
+          <div class="sub-icon-box">
+            <div class="sub-icon-svg mask school"></div>
+          </div>
+          <div class="sub-info">
+            <h4>北科 i 學園 PLUS</h4>
+            <p>輕鬆下載 PDF 和上課錄影</p>
+          </div>
+        </div>
+        <span class="sub-arrow">➔</span>
+      </div>
+      
+      <!-- Sub-cards for Email and Student Query -->
+      <div class="sub-cards-grid">
+        <div class="sub-card" @click="handleSSO('zimbrasso_oauth')">
+          <div class="sub-card-content">
+            <div class="sub-icon-box">
+              <div class="sub-icon-svg mask mail"></div>
+            </div>
+            <div class="sub-info">
+              <h4>電子郵件</h4>
+              <p>Zimbra 電子郵件</p>
+            </div>
+          </div>
+          <span class="sub-arrow">➔</span>
+        </div>
+        
+        <div class="sub-card" @click="handleSSO('sa_003_oauth')">
+          <div class="sub-card-content">
+            <div class="sub-icon-box">
+              <div class="sub-icon-svg mask search"></div>
+            </div>
+            <div class="sub-info">
+              <h4>學生查詢專區</h4>
+              <p>請假、成績與學籍資料</p>
+            </div>
+          </div>
+          <span class="sub-arrow">➔</span>
+        </div>
+      </div>
+    </div>
+
     <div class="category-title">
       <span>常用服務</span>
     </div>
@@ -100,5 +149,34 @@ const handleSSO = (code: string) => {
     color: var(--text-sub);
     font-size: 14px;
     margin-bottom: var(--spacing-md);
+}
+.sub-icon-svg.mask {
+  stroke: none;
+  background-color: var(--primary);
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+}
+
+.sub-icon-svg.school {
+  mask-image: url('/icons/school.svg');
+  -webkit-mask-image: url('/icons/school.svg');
+}
+
+.sub-icon-svg.mail {
+  mask-image: url('/icons/mail.svg');
+  -webkit-mask-image: url('/icons/mail.svg');
+}
+
+.sub-icon-svg.search {
+  mask-image: url('/icons/search.svg');
+  -webkit-mask-image: url('/icons/search.svg');
+}
+
+:global(body[data-theme="dark"] .sub-icon-svg.mask) {
+  background-color: var(--accent);
 }
 </style>

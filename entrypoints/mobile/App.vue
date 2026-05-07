@@ -76,6 +76,11 @@ body {
   grid-template-columns: repeat(1, 1fr) !important;
 }
 
+.sub-cards-grid {
+  grid-template-columns: 1fr !important;
+  margin-top: 0 !important;
+}
+
 .tab-content-area {
   padding-bottom: 120px !important;
 }
