@@ -93,7 +93,7 @@ export default defineContentScript({
             const updateCss = async () => {
                 try {
                     const data = await browser.storage.local.get('isUserCssEnabled') as { isUserCssEnabled?: boolean };
-                    const isEnabled = data.isUserCssEnabled !== false;
+                    const isEnabled = data.isUserCssEnabled === true;
                     console.log('[NTUT SSO+] Storage check - isUserCssEnabled:', isEnabled);
 
                     if (!isEnabled) {

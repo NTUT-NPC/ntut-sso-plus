@@ -14,13 +14,13 @@ defineProps<{
 
 const isDarkMode = ref(false);
 const debugMode = ref(false);
-const isUserCssEnabled = ref(true);
+const isUserCssEnabled = ref(false);
 
 onMounted(async () => {
   const data = await browser.storage.local.get(['debugMode', 'theme', 'isUserCssEnabled']) as { debugMode?: boolean, theme?: string, isUserCssEnabled?: boolean };
   debugMode.value = !!data.debugMode;
   isDarkMode.value = data.theme === 'dark';
-  isUserCssEnabled.value = data.isUserCssEnabled !== false;
+  isUserCssEnabled.value = data.isUserCssEnabled === true;
 });
 
 const toggleDebugMode = async () => {
