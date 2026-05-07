@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NTUT-NPC/ntut_sso_plus.git"
+    "url": "git+https://github.com/NTUT-NPC/ntut-sso-plus.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NTUT-NPC/ntut_sso_plus/issues"
+    "url": "https://github.com/NTUT-NPC/ntut-sso-plus/issues"
   },
   "homepage": "https://github.com/NTUT-NPC/ntut_sso_plus#readme",
   "devDependencies": {

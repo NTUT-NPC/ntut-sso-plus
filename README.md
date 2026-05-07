@@ -22,7 +22,7 @@
 > Firefox Android 無法更新擴充套件，可能需要移除再重新安裝。
 ### GitHub Release
 
-https://github.com/NTUT-NPC/ntut_sso_plus/releases
+https://github.com/NTUT-NPC/ntut-sso-plus/releases
 
 ### Build from source
 #### Chrome

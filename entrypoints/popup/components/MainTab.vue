@@ -113,7 +113,7 @@ const handleSSO = (code: string) => {
     
     <a 
       class="repo-link" 
-      href="https://github.com/NTUT-NPC/ntut_sso_plus" 
+      href="https://github.com/NTUT-NPC/ntut-sso-plus" 
       target="_blank" 
       rel="noopener noreferrer"
     >
