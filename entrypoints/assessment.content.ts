@@ -99,12 +99,23 @@ export default defineContentScript({
                     (ele as HTMLTextAreaElement).value = ConsSentences.pickRandom()
                 }
             }
-            // 其他
-            ([...document.querySelectorAll(`tr:not([bgcolor="#CCFFCC"])>td:nth-child(2)>input[type="checkbox"]`)].at(-1) as HTMLInputElement).checked = false
+            // 避免勾選到「其他」，因為選了就需要填寫文字原因
+            document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(ele => {
+                if (ele.nextSibling && ele.nextSibling.nodeType === 3 && ele.nextSibling.textContent?.includes('其他')) {
+                    (ele as HTMLInputElement).checked = false;
+                }
+            });
 
             // 特殊題型 (colspan="5")：不管同意或不同意，一律勾選「是」
             document.querySelectorAll('td[colspan] input[type="radio"][value="A"]').forEach(ele => (ele as HTMLInputElement).checked = true);
             document.querySelectorAll('td[colspan] input[type="checkbox"][value="A"]').forEach(ele => (ele as HTMLInputElement).checked = true);
+
+            // 如果還有沒填寫到的文字輸入框 (input[type="text"])，自動填入預設回覆
+            document.querySelectorAll('input[type="text"]').forEach(ele => {
+                if (!(ele as HTMLInputElement).value) {
+                    (ele as HTMLInputElement).value = "我其實沒什麼想法：）";
+                }
+            });
 
             // @ts-ignore
             Swal.fire('填寫完畢', '記得檢查一下內容再送出', 'success')
