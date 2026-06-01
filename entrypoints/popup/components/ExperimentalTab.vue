@@ -153,6 +153,18 @@ const handleSSO = (code: string) => {
     </div>
     <div class="glass-card exp-card">
       <div class="exp-card-body">
+        <div class="category-title">自動填寫教學評量</div>
+        <div class="exp-card-desc">進入教學評量頁面後，自動出現同意/不同意快速填寫按鈕。</div>
+
+        <div class="exp-card-actions" v-if="isLoggedIn">
+          <button class="modern-btn" @click="handleSSO('aa_009_oauth')">期末教學評量 1</button>
+          <button class="modern-btn" @click="handleSSO('aa_009_2_oauth')">期末教學評量 2</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass-card exp-card">
+      <div class="exp-card-body">
         <div class="category-title">偵錯模式</div>
         <div class="exp-card-desc">開啟後可在 console 查看 JSON。</div>
         <ToggleSwitch 
