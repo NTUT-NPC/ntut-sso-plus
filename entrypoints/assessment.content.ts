@@ -22,6 +22,14 @@ export default defineContentScript({
             document.head.appendChild(style);
         };
 
+        // 確保支援 RWD 響應式排版，因為老網頁通常沒有這行
+        if (!document.querySelector('meta[name="viewport"]')) {
+            const meta = document.createElement('meta');
+            meta.name = "viewport";
+            meta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+            document.head.appendChild(meta);
+        }
+
         // @ts-ignore
         Array.prototype.pickRandom = function () {
             return this[Math.floor(Math.random() * this.length)];
@@ -143,13 +151,11 @@ export default defineContentScript({
         `
         GM_addStyle(buttonStyle)
 
-        let xSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>`
-        let checkSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"></path></svg>`
         let container = document.createElement("div");
         container.classList.add("copy-link-container");
 
         let button = document.createElement("button");
-        button.innerHTML = `${checkSvg} 同意`;
+        button.innerHTML = `同意`;
         button.classList.add("copy-link-button");
         button.onclick = async function () {
             fill(true)
@@ -157,12 +163,24 @@ export default defineContentScript({
         container.appendChild(button);
 
         let button2 = document.createElement("button");
-        button2.innerHTML = `${xSvg} 不同意`;
+        button2.innerHTML = `不同意`;
         button2.classList.add("copy-link-button");
         button2.onclick = async function () {
             fill(false)
         }
         container.appendChild(button2);
+        
+        let submitBtn = document.createElement("button");
+        submitBtn.innerHTML = `提交`;
+        submitBtn.classList.add("copy-link-button");
+        submitBtn.onclick = function () {
+            const formSubmit = document.querySelector('input[type="submit"][name="B1"]') as HTMLInputElement;
+            if (formSubmit) {
+                formSubmit.click();
+            }
+        };
+        container.appendChild(submitBtn);
+
         if (document.querySelector(`input[type=CheckBox][name="dec"]`)) {
             document.body.appendChild(container);
         }
