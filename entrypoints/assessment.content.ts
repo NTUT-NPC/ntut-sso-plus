@@ -94,6 +94,10 @@ export default defineContentScript({
             // 其他
             ([...document.querySelectorAll(`tr:not([bgcolor="#CCFFCC"])>td:nth-child(2)>input[type="checkbox"]`)].at(-1) as HTMLInputElement).checked = false
 
+            // 特殊題型 (colspan="5")：不管同意或不同意，一律勾選「是」
+            document.querySelectorAll('td[colspan] input[type="radio"][value="A"]').forEach(ele => (ele as HTMLInputElement).checked = true);
+            document.querySelectorAll('td[colspan] input[type="checkbox"][value="A"]').forEach(ele => (ele as HTMLInputElement).checked = true);
+
             // @ts-ignore
             Swal.fire('填寫完畢', '記得檢查一下內容再送出', 'success')
         }
