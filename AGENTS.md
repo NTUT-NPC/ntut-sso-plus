@@ -4,7 +4,7 @@ This document provides essential context and technical guidelines for AI coding 
 
 Follow @CONTRIBUTING.md for git operation guidelines.
 
-Last updated: 2026-03-13. If stale (>7 days), verify Status section against codebase.
+Last updated: 2026-06-03. If stale (>7 days), verify Status section against codebase.
 
 ## 🚀 Project Overview
 **NTUT SSO+** is a browser extension built with [WXT](https://wxt.dev/) and Vue 3. It simplifies the login process for Taipei Tech (NTUT) students and provides additional utilities like course material downloads.
@@ -17,13 +17,16 @@ Last updated: 2026-03-13. If stale (>7 days), verify Status section against code
 - **Styling:** Vanilla CSS (stored in `.css` files and Vue `<style scoped>` blocks)
 
 ## 📁 Project Structure
-- `entrypoints/`: Main entrypoints for the extension.
+All source code lives under `src/` (configured via `srcDir: 'src'` in `wxt.config.ts`). Use `@/` or `~/` aliases to import from `src/`.
+- `src/entrypoints/`: Main entrypoints for the extension.
     - `background.ts`: Service worker handling background tasks (e.g., downloads).
-    - `*.content.ts`: Content scripts injected into specific domains (defined in `wxt.config.ts` matches).
-    - `popup/`: The extension popup UI.
-        - `App.vue`: Root component.
-        - `components/`: Reusable Vue components (e.g., `Login.vue`, `MainView.vue`).
-- `public/`: Static assets like icons.
+    - `popup/`: The extension popup UI (`App.vue`, `main.ts`, `index.html`, `style.css`). Includes mobile-responsive mode via `body.is-mobile` class.
+    - `*.content/`: Content scripts injected into specific domains, each as a directory with `index.ts` and associated CSS.
+    - `user-css.content/`: Custom CSS injection configuration and stylesheets.
+- `src/components/`: Shared Vue components (e.g., `Login.vue`, `MainView.vue`).
+- `src/utils/`: Shared utilities (`sso.ts`, `cryptoUtils.ts`, `constants.ts`).
+- `src/assets/`: CSS and other static assets.
+- `public/`: Static assets like icons (at project root, per WXT convention).
 - `wxt.config.ts`: Configuration for permissions, host permissions, and manifest details.
 
 ## 📏 Coding Standards
@@ -47,12 +50,12 @@ Last updated: 2026-03-13. If stale (>7 days), verify Status section against code
 
 ### Vue Patterns
 - Always use `<script setup lang="ts">`.
-- Use CSS variables for styling to maintain theme consistency (see `entrypoints/popup/style.css`).
+- Use CSS variables for styling to maintain theme consistency (see `src/entrypoints/popup/style.css`).
 
 ## 🔌 Architecture Notes
 - **Communication:** Content scripts and the popup communicate with the background script using `browser.runtime.sendMessage`.
 - **Storage:** Use `browser.storage.local` for persisting user credentials and settings.
-- **Authentication:** SSO logic is centralized in `entrypoints/popup/sso.ts`.
+- **Authentication:** SSO logic is centralized in `src/utils/sso.ts`.
 
 ## 📦 Versioning
 The project now uses a **year-based versioning strategy** combined with the **Pull Request Number** for tracking changes.

@@ -71,7 +71,7 @@ const fileList = [
 </template>
 
 <style scoped>
-@import "../../file-download.css";
+@import "../entrypoints/file.content/file-download.css";
 
 .simulation-wrapper.mooc-sidebar {
     background: #FFFFFF;

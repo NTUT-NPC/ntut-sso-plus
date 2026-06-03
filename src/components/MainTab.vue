@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { browser } from 'wxt/browser';
 import { ref, onMounted } from 'vue';
-import { SERVICES, DEFAULT_FAVORITES } from '../constants';
-import { startSSO } from '../sso';
+import { SERVICES, DEFAULT_FAVORITES } from '@/utils/constants';
+import { startSSO } from '@/utils/sso';
 
 const favorites = ref<string[]>([]);
 
