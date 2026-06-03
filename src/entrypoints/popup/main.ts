@@ -4,17 +4,18 @@ import './style.css';
 
 import { browser } from 'wxt/browser';
 
+const isAlreadyMobileTab = window.location.search.includes('mobile=1');
 let redirected = false;
 
 const doRedirect = () => {
     if (redirected) return;
     redirected = true;
-    browser.tabs.create({ url: browser.runtime.getURL('/mobile.html') });
+    browser.tabs.create({ url: browser.runtime.getURL('/popup.html?mobile=1') });
     window.close();
 };
 
 // 1. Fast synchronous check to prevent UI flash
-if (navigator.userAgent.includes('Android')) {
+if (!isAlreadyMobileTab && navigator.userAgent.includes('Android')) {
     doRedirect();
 }
 
@@ -22,7 +23,7 @@ if (navigator.userAgent.includes('Android')) {
 const checkPlatform = async () => {
     try {
         const info = await browser.runtime.getPlatformInfo();
-        if (info.os === 'android' && !window.location.pathname.includes('mobile.html')) {
+        if (info.os === 'android' && !isAlreadyMobileTab) {
             doRedirect();
         }
     } catch (e) {

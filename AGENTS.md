@@ -20,11 +20,10 @@ Last updated: 2026-06-03. If stale (>7 days), verify Status section against code
 All source code lives under `src/` (configured via `srcDir: 'src'` in `wxt.config.ts`). Use `@/` or `~/` aliases to import from `src/`.
 - `src/entrypoints/`: Main entrypoints for the extension.
     - `background.ts`: Service worker handling background tasks (e.g., downloads).
-    - `*.content.ts`: Content scripts injected into specific domains (defined in `wxt.config.ts` matches).
-    - `popup/`: The extension popup UI (`App.vue`, `main.ts`, `index.html`, `style.css`).
-    - `mobile/`: Mobile-optimized version of the popup.
-    - `user-css/`: Custom CSS injection configuration and stylesheets.
-- `src/components/`: Shared Vue components used by both popup and mobile (e.g., `Login.vue`, `MainView.vue`).
+    - `popup/`: The extension popup UI (`App.vue`, `main.ts`, `index.html`, `style.css`). Includes mobile-responsive mode via `body.is-mobile` class.
+    - `*.content/`: Content scripts injected into specific domains, each as a directory with `index.ts` and associated CSS.
+    - `user-css.content/`: Custom CSS injection configuration and stylesheets.
+- `src/components/`: Shared Vue components (e.g., `Login.vue`, `MainView.vue`).
 - `src/utils/`: Shared utilities (`sso.ts`, `cryptoUtils.ts`, `constants.ts`).
 - `src/assets/`: CSS and other static assets.
 - `public/`: Static assets like icons (at project root, per WXT convention).

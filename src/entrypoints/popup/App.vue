@@ -16,6 +16,13 @@ const guestTabs = [
 ];
 
 onMounted(async () => {
+  // Detect mobile (opened as full tab on Android)
+  const isMobile = window.location.search.includes('mobile=1')
+    || navigator.userAgent.includes('Android');
+  if (isMobile) {
+    document.body.classList.add('is-mobile');
+  }
+
   const result = await browser.storage.local.get(['uid', 'pwd', 'theme']);
   if (result.theme) {
     document.body.setAttribute('data-theme', result.theme as string);
@@ -101,5 +108,38 @@ const handleLogout = async () => {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+</style>
+
+<style>
+/* Mobile overrides (applied when opened as full tab on Android) */
+body.is-mobile {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden;
+}
+
+body.is-mobile .container {
+  min-height: 100vh;
+  padding: var(--spacing-md) !important;
+  padding-bottom: 80px !important;
+}
+
+body.is-mobile .grid-layout {
+  grid-template-columns: repeat(1, 1fr) !important;
+}
+
+body.is-mobile .sub-cards-grid {
+  grid-template-columns: 1fr !important;
+  margin-top: 0 !important;
+}
+
+body.is-mobile .tab-content-area {
+  padding-bottom: 120px !important;
+}
+
+/* Hide 'New Tab' and 'New Window' in mobile */
+body.is-mobile .header-actions button.secondary {
+  display: none !important;
 }
 </style>
