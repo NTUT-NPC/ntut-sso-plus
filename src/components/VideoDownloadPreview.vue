@@ -46,7 +46,7 @@ const simulateDownload = (ch: string) => {
 </template>
 
 <style scoped>
-@import "../../video-download.css";
+@import "../entrypoints/video.content/video-download.css";
 
 .simulation-wrapper.video-player-sim {
     background: #000;

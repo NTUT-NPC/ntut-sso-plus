@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { browser } from 'wxt/browser';
 import { ref, onMounted } from 'vue';
-import Login from './components/Login.vue';
-import MainView from './components/MainView.vue';
-import Tabs from './components/Tabs.vue';
-import ExperimentalTab from './components/ExperimentalTab.vue';
-import Header from './components/Header.vue';
+import Login from '@/components/Login.vue';
+import MainView from '@/components/MainView.vue';
+import Tabs from '@/components/Tabs.vue';
+import ExperimentalTab from '@/components/ExperimentalTab.vue';
+import Header from '@/components/Header.vue';
 
 const isLoggedIn = ref(false);
 const isLoading = ref(true);
@@ -59,11 +59,42 @@ const handleLogout = async () => {
   </div>
 </template>
 
+<style>
+/* Global overrides for Mobile version */
+body {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  overflow-x: hidden;
+}
+
+.container {
+  padding: var(--spacing-md) !important;
+  padding-bottom: 80px !important;
+}
+
+.grid-layout {
+  grid-template-columns: repeat(1, 1fr) !important;
+}
+
+.sub-cards-grid {
+  grid-template-columns: 1fr !important;
+  margin-top: 0 !important;
+}
+
+.tab-content-area {
+  padding-bottom: 120px !important;
+}
+
+/* Hide 'New Tab' and 'New Window' in mobile */
+.header-actions button.secondary {
+  display: none !important;
+}
+</style>
+
 <style scoped>
 .container {
   width: 100%;
-  height: 100%;
-  padding: var(--spacing-md);
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: var(--bg-sub);
@@ -77,7 +108,7 @@ const handleLogout = async () => {
 }
 
 .loading-screen {
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

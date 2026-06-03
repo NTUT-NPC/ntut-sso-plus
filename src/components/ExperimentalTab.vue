@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, toRaw } from 'vue';
 import { browser } from 'wxt/browser';
-import { startSSO } from '../sso';
+import { startSSO } from '@/utils/sso';
 import CollapsibleGuide from './CollapsibleGuide.vue';
 import FileDownloadPreview from './FileDownloadPreview.vue';
 import CourseSelectorPreview from './CourseSelectorPreview.vue';
