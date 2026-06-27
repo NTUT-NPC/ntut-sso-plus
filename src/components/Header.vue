@@ -22,6 +22,21 @@ const openInNewWindow = () => {
   window.close();
 };
 
+const openInSidebar = async () => {
+  try {
+    if ((browser as any).sidebarAction && (browser as any).sidebarAction.open) {
+      await (browser as any).sidebarAction.open();
+      window.close();
+    } else if ((browser as any).sidePanel && (browser as any).sidePanel.open) {
+      const windowId = (await browser.windows.getCurrent()).id;
+      await (browser as any).sidePanel.open({ windowId });
+      window.close();
+    }
+  } catch (error) {
+    console.error('Failed to open sidebar', error);
+  }
+};
+
 const handleLogout = () => {
   emit('logout');
 };
@@ -45,6 +60,9 @@ const handleLogout = () => {
       </button>
       <button class="icon-btn hide-compact" title="視窗模式" @click="openInNewWindow">
         <div class="icon maximize"></div>
+      </button>
+      <button class="icon-btn hide-compact" title="側邊欄模式" @click="openInSidebar">
+        <div class="icon sidebar"></div>
       </button>
       <button v-if="showLogout" class="modern-btn sm" @click="handleLogout">登出</button>
     </div>
@@ -147,6 +165,11 @@ header {
 .maximize {
   mask-image: url('/icons/open_in_new_down.svg');
   -webkit-mask-image: url('/icons/open_in_new_down.svg');
+}
+
+.sidebar {
+  mask-image: url('/icons/sidebar.svg');
+  -webkit-mask-image: url('/icons/sidebar.svg');
 }
 
 .modern-btn.sm {

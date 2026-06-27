@@ -11,12 +11,20 @@ export default defineConfig({
       entries: ["src/entrypoints/popup/index.html"],
     },
   }),
-  manifest: {
+  manifest: (env) => ({
     name: "NTUT SSO+",
     version: pkg.version,
     description:
       "提供北科學生快速登入校內系統的擴充功能。",
-    permissions: ["storage", "declarativeNetRequest", "downloads", "tabs"],
+    permissions: ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel"],
+    side_panel: {
+      default_path: "popup.html",
+    },
+    sidebar_action: {
+      default_panel: "popup.html",
+      default_title: "NTUT SSO+",
+      default_icon: "icons/icon48.png"
+    },
     host_permissions: [
       "https://*.ntut.edu.tw/*",
     ],
@@ -52,5 +60,5 @@ export default defineConfig({
         },
       } as any,
     },
-  },
+  }),
 });
