@@ -99,7 +99,7 @@ html {
   padding: 0;
 }
 
-html.is-compact,
+html.is-tab.is-compact,
 html.is-mobile {
   min-width: 0 !important;
   min-height: 0 !important;
@@ -507,7 +507,7 @@ body.is-compact #app {
 }
 
 body.is-compact .container {
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 body.is-compact .grid-layout {
@@ -519,7 +519,7 @@ body.is-compact .sub-cards-grid {
 }
 
 body.is-compact .tab-content-area {
-  padding-bottom: 80px;
+  padding-bottom: 32px;
 }
 
 body.is-compact .hide-compact {
@@ -533,6 +533,12 @@ body.is-compact.is-narrow .grid-layout {
 
 body.is-compact.is-narrow .container {
   padding: var(--spacing-sm);
+}
+
+body.is-compact.is-narrow .tab-content-area {
+  padding: var(--spacing-sm);
+  padding-bottom: 32px;
+  margin: calc(-1 * var(--spacing-sm));
 }
 
 body.is-compact.is-narrow .tab-trigger {

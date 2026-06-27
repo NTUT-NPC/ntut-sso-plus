@@ -27,6 +27,16 @@ const updateCompactMode = () => {
 };
 
 onMounted(async () => {
+  try {
+    const tab = await browser.tabs.getCurrent();
+    if (tab) {
+      document.documentElement.classList.add('is-tab');
+      document.body.classList.add('is-tab');
+    }
+  } catch (e) {
+    // Ignore
+  }
+
   updateCompactMode();
   window.addEventListener('resize', updateCompactMode);
 
@@ -139,9 +149,9 @@ body.is-mobile {
 }
 
 body.is-mobile .container {
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: var(--spacing-md) !important;
-  padding-bottom: 80px !important;
+  padding-bottom: 24px !important;
 }
 
 body.is-mobile .grid-layout {
@@ -154,7 +164,7 @@ body.is-mobile .sub-cards-grid {
 }
 
 body.is-mobile .tab-content-area {
-  padding-bottom: 120px !important;
+  padding-bottom: 40px !important;
 }
 
 /* Hide 'New Tab' and 'New Window' in mobile */
