@@ -16,7 +16,9 @@ export default defineConfig({
     version: pkg.version,
     description:
       "提供北科學生快速登入校內系統的擴充功能。",
-    permissions: ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel"],
+    permissions: env.browser === 'firefox'
+      ? ["storage", "declarativeNetRequest", "downloads", "tabs"]
+      : ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel"],
     side_panel: {
       default_path: "popup.html",
     },
