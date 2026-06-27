@@ -22,17 +22,20 @@ const updateCompactMode = () => {
   const w = window.innerWidth;
   document.body.classList.toggle('is-compact', w < COMPACT_BREAKPOINT);
   document.body.classList.toggle('is-narrow', w < NARROW_BREAKPOINT);
+  document.documentElement.classList.toggle('is-compact', w < COMPACT_BREAKPOINT);
+  document.documentElement.classList.toggle('is-narrow', w < NARROW_BREAKPOINT);
 };
 
 onMounted(async () => {
   updateCompactMode();
   window.addEventListener('resize', updateCompactMode);
 
-  // Detect mobile (opened as full tab on Android)
+  // Detect mobile
   const isMobile = window.location.search.includes('mobile=1')
     || navigator.userAgent.includes('Android');
   if (isMobile) {
     document.body.classList.add('is-mobile');
+    document.documentElement.classList.add('is-mobile');
   }
 
   const result = await browser.storage.local.get(['uid', 'pwd', 'theme']);

@@ -14,23 +14,11 @@ const doRedirect = () => {
     window.close();
 };
 
-// 1. Fast synchronous check to prevent UI flash
-if (!isAlreadyMobileTab && navigator.userAgent.includes('Android')) {
+// 偵測是否為 Firefox Android
+const isFirefoxAndroid = navigator.userAgent.includes('Android') && navigator.userAgent.includes('Firefox');
+
+if (!isAlreadyMobileTab && isFirefoxAndroid) {
     doRedirect();
 }
-
-// 2. Secondary verification using Extension API (as a fallback)
-const checkPlatform = async () => {
-    try {
-        const info = await browser.runtime.getPlatformInfo();
-        if (info.os === 'android' && !isAlreadyMobileTab) {
-            doRedirect();
-        }
-    } catch (e) {
-        // Fallback or ignore
-    }
-};
-
-checkPlatform();
 
 createApp(App).mount('#app');
