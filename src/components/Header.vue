@@ -36,10 +36,10 @@ const handleLogout = () => {
       <a class="icon-btn" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
         <div class="icon portal"></div>
       </a>
-      <a class="icon-btn" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
+      <a class="icon-btn hide-compact" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
         <div class="icon github"></div>
       </a>
-      <button class="icon-btn" title="開啟分頁" @click="openInNewTab">
+      <button class="icon-btn hide-compact" title="開啟分頁" @click="openInNewTab">
         <div class="icon external-link"></div>
       </button>
       <button class="icon-btn" title="視窗模式" @click="openInNewWindow">
@@ -151,5 +151,7 @@ header {
 .modern-btn.sm {
   padding: 8.5px 17px;
   font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 </style>

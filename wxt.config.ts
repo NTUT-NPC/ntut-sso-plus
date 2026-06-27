@@ -6,6 +6,11 @@ export default defineConfig({
   srcDir: "src",
   outDir: "dist",
   modules: ["@wxt-dev/module-vue"],
+  vite: () => ({
+    optimizeDeps: {
+      entries: ["src/entrypoints/popup/index.html"],
+    },
+  }),
   manifest: {
     name: "NTUT SSO+",
     version: pkg.version,

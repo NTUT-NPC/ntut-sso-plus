@@ -483,3 +483,51 @@ body[data-theme="dark"] .hero-card:hover .sub-arrow,
 body[data-theme="dark"] .sub-card:hover .sub-arrow {
   color: var(--accent);
 }
+
+/* ======================
+   Responsive Layout (toggled via .is-compact class by JS)
+====================== */
+body.is-compact {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+body.is-compact #app {
+  overflow: visible;
+}
+
+body.is-compact .container {
+  min-height: 100vh;
+}
+
+body.is-compact .grid-layout {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+body.is-compact .sub-cards-grid {
+  grid-template-columns: 1fr;
+}
+
+body.is-compact .tab-content-area {
+  padding-bottom: 80px;
+}
+
+body.is-compact .hide-compact {
+  display: none !important;
+}
+
+/* Narrow compact (under 360px, handled by nested media query) */
+body.is-compact.is-narrow .grid-layout {
+  grid-template-columns: 1fr;
+}
+
+body.is-compact.is-narrow .container {
+  padding: var(--spacing-sm);
+}
+
+body.is-compact.is-narrow .tab-trigger {
+  font-size: 12px;
+  padding: 8px;
+}

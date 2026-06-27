@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { browser } from 'wxt/browser';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import Login from '@/components/Login.vue';
 import MainView from '@/components/MainView.vue';
 import Tabs from '@/components/Tabs.vue';
 import ExperimentalTab from '@/components/ExperimentalTab.vue';
 import Header from '@/components/Header.vue';
+
+const COMPACT_BREAKPOINT = 700;
+const NARROW_BREAKPOINT = 360;
 
 const isLoggedIn = ref(false);
 const isLoading = ref(true);
@@ -15,7 +18,16 @@ const guestTabs = [
   { id: 'other', label: '快捷功能' },
 ];
 
+const updateCompactMode = () => {
+  const w = window.innerWidth;
+  document.body.classList.toggle('is-compact', w < COMPACT_BREAKPOINT);
+  document.body.classList.toggle('is-narrow', w < NARROW_BREAKPOINT);
+};
+
 onMounted(async () => {
+  updateCompactMode();
+  window.addEventListener('resize', updateCompactMode);
+
   // Detect mobile (opened as full tab on Android)
   const isMobile = window.location.search.includes('mobile=1')
     || navigator.userAgent.includes('Android');
@@ -42,6 +54,10 @@ const handleLogout = async () => {
   await browser.storage.local.remove(['uid', 'pwd']);
   isLoggedIn.value = false;
 };
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateCompactMode);
+});
 </script>
 
 <template>
