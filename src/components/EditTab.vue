@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { browser } from 'wxt/browser';
 import { ref, onMounted } from 'vue';
-import { SERVICES, DEFAULT_FAVORITES } from '../constants';
+import { SERVICES, DEFAULT_FAVORITES } from '@/utils/constants';
 
 const emit = defineEmits(['favorites-changed']);
 

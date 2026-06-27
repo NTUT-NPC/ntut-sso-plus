@@ -1,5 +1,5 @@
-import { BASE_URL } from "./constants";
-import { decrypt, isEncryptedFormat } from "./cryptoUtils";
+import { BASE_URL } from '@/utils/constants';
+import { decrypt, isEncryptedFormat } from '@/utils/cryptoUtils';
 
 export async function startSSO(apOu: string) {
     document.body.classList.add('fade-out-exit');

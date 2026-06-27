@@ -12,9 +12,9 @@
 // Supports * wildcard, e.g. @match "/course/*";
 import { browser } from 'wxt/browser';
 
-import config from './user-css/config.json';
+import config from './config.json';
 
-const cssModules = import.meta.glob('./user-css/*.css', { query: '?raw', eager: true });
+const cssModules = import.meta.glob('./*.css', { query: '?raw', eager: true });
 
 interface CssSection {
     pattern: string | null;  // null = global (no @match)

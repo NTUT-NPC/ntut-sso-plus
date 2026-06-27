@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { browser } from 'wxt/browser';
 import { ref } from 'vue';
-import { encrypt } from '../cryptoUtils';
-import { BASE_URL } from '../constants';
+import { encrypt } from '@/utils/cryptoUtils';
+import { BASE_URL } from '@/utils/constants';
 
 const emit = defineEmits(['login-success']);
 

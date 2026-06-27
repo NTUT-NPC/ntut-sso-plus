@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { ref, onMounted, toRaw } from 'vue';
 import { browser } from 'wxt/browser';
-import { startSSO } from '../sso';
+import { startSSO } from '@/utils/sso';
 import CollapsibleGuide from './CollapsibleGuide.vue';
 import FileDownloadPreview from './FileDownloadPreview.vue';
 import CourseSelectorPreview from './CourseSelectorPreview.vue';
 import VideoDownloadPreview from './VideoDownloadPreview.vue';
 import ToggleSwitch from './ToggleSwitch.vue';
+import EditTab from './EditTab.vue';
 
 defineProps<{
   isLoggedIn?: boolean;
 }>();
+
+const emit = defineEmits(['favorites-changed']);
 
 const isDarkMode = ref(false);
 const debugMode = ref(false);
@@ -44,6 +47,16 @@ const handleSSO = (code: string) => {
 
 <template>
   <div class="exp-section animate-fade-in">
+    <div class="glass-card exp-card">
+      <div class="exp-card-body">
+        <div class="category-title">編輯常用服務</div>
+        <div class="exp-card-desc">點擊下方服務，將其加入或移出您的「常用服務」清單（最多 12 個）。</div>
+        <CollapsibleGuide title="展開/收合編輯清單">
+          <EditTab @favorites-changed="emit('favorites-changed')" />
+        </CollapsibleGuide>
+      </div>
+    </div>
+
     <div class="glass-card exp-card">
       <div class="exp-card-body">
         <div class="category-title">擴充功能樣式</div>
