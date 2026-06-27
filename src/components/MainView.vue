@@ -1,4 +1,4 @@
-<script setup lang="ts">
+x<script setup lang="ts">
 import { ref } from 'vue';
 import Header from './Header.vue';
 import Tabs from './Tabs.vue';
@@ -10,7 +10,6 @@ const emit = defineEmits(['logout']);
 
 const tabs = [
   { id: 'main', label: '校園入口' },
-  { id: 'edit', label: '編輯常用' },
   { id: 'other', label: '實驗性' },
 ];
 
@@ -33,11 +32,8 @@ const handleFavoritesChanged = () => {
         <template #main>
           <MainTab :key="refreshMainTab" />
         </template>
-        <template #edit>
-          <EditTab @favorites-changed="handleFavoritesChanged" />
-        </template>
         <template #other>
-          <ExperimentalTab is-logged-in />
+          <ExperimentalTab is-logged-in @favorites-changed="handleFavoritesChanged" />
         </template>
       </Tabs>
     </div>
