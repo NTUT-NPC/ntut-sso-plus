@@ -1,12 +1,38 @@
 import { BASE_URL } from '@/utils/constants';
 import { decrypt, isEncryptedFormat } from '@/utils/cryptoUtils';
 
+async function checkIstudyReachable(): Promise<boolean> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+    try {
+        await fetch('https://istudy.ntut.edu.tw/', {
+            method: 'GET',
+            mode: 'no-cors',
+            signal: controller.signal,
+            cache: 'no-store'
+        });
+        clearTimeout(timeoutId);
+        return true;
+    } catch (e) {
+        clearTimeout(timeoutId);
+        return false;
+    }
+}
+
 export async function startSSO(apOu: string) {
     document.body.classList.add('fade-out-exit');
 
     await new Promise(resolve => setTimeout(resolve, 200));
 
     try {
+        if (apOu === 'ischool_plus_oauth') {
+            const isReachable = await checkIstudyReachable();
+            if (!isReachable) {
+                throw new Error("無法連線 i 學園，請連接北科 Wi-Fi 或 VPN");
+            }
+        }
+
         const storage = await browser.storage.local.get(['uid', 'pwd']);
         const uid = storage.uid as string;
         let pwd = storage.pwd as string;
@@ -74,6 +100,7 @@ export async function startSSO(apOu: string) {
         });
 
     } catch (err: any) {
+        document.body.classList.remove('fade-out-exit');
         alert("錯誤: " + err.message);
     }
 }

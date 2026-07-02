@@ -19,14 +19,17 @@ export default defineConfig({
     permissions: env.browser === 'firefox'
       ? ["storage", "declarativeNetRequest", "downloads", "tabs"]
       : ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel"],
-    side_panel: {
-      default_path: "popup.html",
-    },
-    sidebar_action: {
-      default_panel: "popup.html",
-      default_title: "NTUT SSO+",
-      default_icon: "icons/icon48.png"
-    },
+    ...(env.browser === 'firefox' ? {
+      sidebar_action: {
+        default_panel: "popup.html",
+        default_title: "NTUT SSO+",
+        default_icon: "icons/icon48.png"
+      }
+    } : {
+      side_panel: {
+        default_path: "popup.html",
+      }
+    }),
     host_permissions: [
       "https://*.ntut.edu.tw/*",
     ],

@@ -86,69 +86,67 @@ export default defineContentScript({
                 c.matches.some(pattern => urlMatches(currentUrl, pattern))
             );
 
-            if (activeConfigs.length === 0) {
-                console.warn('[NTUT SSO+] No user CSS found for URL:', currentUrl);
-            }
+            if (activeConfigs.length > 0) {
+                const updateCss = async () => {
+                    try {
+                        const data = await browser.storage.local.get('isUserCssEnabled') as { isUserCssEnabled?: boolean };
+                        const isEnabled = data.isUserCssEnabled === true;
+                        console.log('[NTUT SSO+] Storage check - isUserCssEnabled:', isEnabled);
 
-            const updateCss = async () => {
-                try {
-                    const data = await browser.storage.local.get('isUserCssEnabled') as { isUserCssEnabled?: boolean };
-                    const isEnabled = data.isUserCssEnabled === true;
-                    console.log('[NTUT SSO+] Storage check - isUserCssEnabled:', isEnabled);
+                        if (!isEnabled) {
+                            console.log('[NTUT SSO+] User CSS disabled by settings (isUserCssEnabled: false)');
+                            document.getElementById('ntut-sso-user-css')?.remove();
+                            return;
+                        }
 
-                    if (!isEnabled) {
-                        console.log('[NTUT SSO+] User CSS disabled by settings (isUserCssEnabled: false)');
-                        document.getElementById('ntut-sso-user-css')?.remove();
-                        return;
-                    }
-
-                    console.log('[NTUT SSO+] Injecting CSS for following configs:', activeConfigs.map(c => c.css));
-                    let combinedCss = '';
-                    for (const conf of activeConfigs) {
-                        const cssFiles = Array.isArray(conf.css) ? conf.css : [conf.css];
-                        for (const cssFile of cssFiles) {
-                            const sections = CSS_MAP[cssFile];
-                            if (sections && Array.isArray(sections)) {
-                                // Filter sections based on @match if present
-                                for (const section of sections) {
-                                    if (!section.pattern || urlMatches(window.location.pathname, section.pattern)) {
-                                        combinedCss += section.css + '\n';
+                        console.log('[NTUT SSO+] Injecting CSS for following configs:', activeConfigs.map(c => c.css));
+                        let combinedCss = '';
+                        for (const conf of activeConfigs) {
+                            const cssFiles = Array.isArray(conf.css) ? conf.css : [conf.css];
+                            for (const cssFile of cssFiles) {
+                                const sections = CSS_MAP[cssFile];
+                                if (sections && Array.isArray(sections)) {
+                                    // Filter sections based on @match if present
+                                    for (const section of sections) {
+                                        if (!section.pattern || urlMatches(window.location.pathname, section.pattern)) {
+                                            combinedCss += section.css + '\n';
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                    if (combinedCss.trim()) {
-                        console.log('[NTUT SSO+] Combined CSS length:', combinedCss.length);
-                        let style = document.getElementById('ntut-sso-user-css') as HTMLStyleElement;
-                        if (!style) {
-                            style = document.createElement('style');
-                            style.id = 'ntut-sso-user-css';
-                            (document.head || document.documentElement).appendChild(style);
+                        if (combinedCss.trim()) {
+                            console.log('[NTUT SSO+] Combined CSS length:', combinedCss.length);
+                            let style = document.getElementById('ntut-sso-user-css') as HTMLStyleElement;
+                            if (!style) {
+                                style = document.createElement('style');
+                                style.id = 'ntut-sso-user-css';
+                                (document.head || document.documentElement).appendChild(style);
+                            }
+                            style.textContent = combinedCss;
+                        } else {
+                            document.getElementById('ntut-sso-user-css')?.remove();
                         }
-                        style.textContent = combinedCss;
-                    } else {
-                        document.getElementById('ntut-sso-user-css')?.remove();
+                    } catch (err) {
+                        console.error('[NTUT SSO+] Error in updateCss:', err);
                     }
-                } catch (err) {
-                    console.error('[NTUT SSO+] Error in updateCss:', err);
-                }
-            };
+                };
 
-            // 1. Inject CSS
-            await updateCss();
+                // 1. Inject CSS
+                await updateCss();
 
-            // Listen for storage changes to dynamic update CSS
-            browser.storage.onChanged.addListener((changes) => {
-                try {
-                    if (changes.isUserCssEnabled) {
-                        updateCss();
+                // Listen for storage changes to dynamic update CSS
+                browser.storage.onChanged.addListener((changes) => {
+                    try {
+                        if (changes.isUserCssEnabled) {
+                            updateCss();
+                        }
+                    } catch (err) {
+                        console.error('[NTUT SSO+] Error in storage change handler:', err);
                     }
-                } catch (err) {
-                    console.error('[NTUT SSO+] Error in storage change handler:', err);
-                }
-            });
+                });
+            }
 
             // 2. Enable Autocomplete (ONLY for muid/password and add hints for Bitwarden)
             function enableAutocomplete() {
