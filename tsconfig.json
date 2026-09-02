@@ -12,5 +12,5 @@
         ".wxt/wxt.d.ts",
         "**/*",
         ".wxt/types/imports.d.ts"
-    ]
+, ".CLOUDFLARE_PAGES"    ]
 }

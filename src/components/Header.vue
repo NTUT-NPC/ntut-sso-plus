@@ -8,13 +8,13 @@ defineProps<{
 const emit = defineEmits(['logout']);
 
 const openInNewTab = () => {
-  browser.tabs.create({ url: (browser.runtime as any).getURL('/popup.html') });
+  browser.tabs.create({ url: browser.runtime.getURL('/popup.html') });
   window.close();
 };
 
 const openInNewWindow = () => {
   browser.windows.create({
-    url: (browser.runtime as any).getURL('/popup.html'),
+    url: browser.runtime.getURL('/popup.html'),
     type: 'popup',
     width: 720,
     height: 640,
@@ -40,6 +40,11 @@ const openInSidebar = async () => {
 const handleLogout = () => {
   emit('logout');
 };
+
+const openQrLogin = () => {
+  browser.tabs.create({ url: browser.runtime.getURL('/qr-login.html') });
+  window.close();
+};
 </script>
 
 <template>
@@ -49,20 +54,23 @@ const handleLogout = () => {
       <div class="npc-tag">v{{ browser.runtime.getManifest().version }} BY NPC</div>
     </a>
     <div class="header-actions">
-      <a class="icon-btn" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
+      <a class="icon-btn hide-mobile" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
         <div class="icon portal"></div>
       </a>
-      <a class="icon-btn hide-compact" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
+      <a class="icon-btn hide-compact hide-mobile" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
         <div class="icon github"></div>
       </a>
       <button class="icon-btn" title="開啟分頁" @click="openInNewTab">
         <div class="icon external-link"></div>
       </button>
-      <button class="icon-btn hide-compact" title="視窗模式" @click="openInNewWindow">
+      <button class="icon-btn hide-compact hide-mobile" title="視窗模式" @click="openInNewWindow">
         <div class="icon maximize"></div>
       </button>
-      <button class="icon-btn hide-compact" title="側邊欄模式" @click="openInSidebar">
+      <button class="icon-btn hide-compact hide-mobile" title="側邊欄模式" @click="openInSidebar">
         <div class="icon sidebar"></div>
+      </button>
+      <button v-if="showLogout" class="icon-btn" title="QR 掃碼登入" @click="openQrLogin">
+        <div class="icon qr-scan"></div>
       </button>
       <button v-if="showLogout" class="modern-btn sm" @click="handleLogout">登出</button>
     </div>
@@ -170,6 +178,11 @@ header {
 .sidebar {
   mask-image: url('/icons/sidebar.svg');
   -webkit-mask-image: url('/icons/sidebar.svg');
+}
+
+.qr-scan {
+  mask-image: url('/icons/qr-scan.svg');
+  -webkit-mask-image: url('/icons/qr-scan.svg');
 }
 
 .modern-btn.sm {

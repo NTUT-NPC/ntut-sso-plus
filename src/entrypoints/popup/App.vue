@@ -167,8 +167,8 @@ body.is-mobile .tab-content-area {
   padding-bottom: 40px !important;
 }
 
-/* Hide 'New Tab' and 'New Window' in mobile */
-body.is-mobile .header-actions button.secondary {
+/* Hide specific buttons in mobile */
+body.is-mobile .hide-mobile {
   display: none !important;
 }
 </style>
