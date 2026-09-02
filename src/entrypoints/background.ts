@@ -1,4 +1,22 @@
 export default defineBackground(() => {
+    // 解決手機版瀏覽器（Titanium, Firefox Android, Edge Android）Popup 顯示不完美的問題
+    // 如果偵測到是 Android 裝置，我們就把預設的 popup 拔掉，改用開啟新分頁的方式顯示
+    browser.runtime.getPlatformInfo().then((info) => {
+        if (info.os === 'android') {
+            const actionAPI = browser.action || browser.browserAction;
+            if (actionAPI) {
+                actionAPI.setPopup({ popup: "" });
+            }
+        }
+    });
+
+    const actionAPI = browser.action || browser.browserAction;
+    if (actionAPI) {
+        actionAPI.onClicked.addListener((tab) => {
+            browser.tabs.create({ url: browser.runtime.getURL("/popup.html?mobile=1") });
+        });
+    }
+
     let activeDownloads: Record<number, boolean> = {};
 
     interface DownloadMessage {
@@ -41,6 +59,50 @@ export default defineBackground(() => {
                     identifier: (message as any).identifier
                 });
             }
+            return true;
+        }
+
+        if (message.action === 'get_sso_redirect') {
+            const { actionUrl, formData } = message as any;
+            
+            (async () => {
+                let capturedUrl: string | null = null;
+                const listener = (details: any): any => {
+                    const locationHeader = details.responseHeaders?.find((h: any) => h.name.toLowerCase() === 'location');
+                    if (locationHeader) {
+                        capturedUrl = locationHeader.value;
+                    }
+                    return undefined;
+                };
+                
+                browser.webRequest.onHeadersReceived.addListener(
+                    listener,
+                    { urls: ["<all_urls>"] },
+                    ['responseHeaders']
+                );
+                
+                try {
+                    const body = new URLSearchParams(formData);
+                    await fetch(actionUrl, {
+                        method: 'POST',
+                        body: body,
+                        redirect: 'manual',
+                        credentials: 'include'
+                    });
+                } catch (err: any) {
+                    // Fetch will throw a TypeError for cross-origin opaque redirects.
+                    // This is expected! The onHeadersReceived listener should have already caught the Location header.
+                    console.warn("[SSO+ BG] Fetch threw (expected for opaque redirects):", err.message);
+                } finally {
+                    browser.webRequest.onHeadersReceived.removeListener(listener);
+                    if (capturedUrl) {
+                        sendResponse({ success: true, url: capturedUrl });
+                    } else {
+                        sendResponse({ success: false, error: 'No redirect Location found' });
+                    }
+                }
+            })();
+            
             return true;
         }
     });

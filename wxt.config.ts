@@ -17,8 +17,8 @@ export default defineConfig({
     description:
       "提供北科學生快速登入校內系統的擴充功能。",
     permissions: env.browser === 'firefox'
-      ? ["storage", "declarativeNetRequest", "downloads", "tabs"]
-      : ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel"],
+      ? ["storage", "declarativeNetRequest", "downloads", "tabs", "webRequest"]
+      : ["storage", "declarativeNetRequest", "downloads", "tabs", "sidePanel", "webRequest"],
     side_panel: {
       default_path: "popup.html",
     },
@@ -29,6 +29,7 @@ export default defineConfig({
     },
     host_permissions: [
       "https://*.ntut.edu.tw/*",
+      "https://*.firebasedatabase.app/*",
     ],
     homepage_url: "https://github.com/NTUT-NPC/ntut-sso-plus",
     icons: {
