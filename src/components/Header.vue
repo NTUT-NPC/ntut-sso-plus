@@ -54,19 +54,19 @@ const openQrLogin = () => {
       <div class="npc-tag">v{{ browser.runtime.getManifest().version }} BY NPC</div>
     </a>
     <div class="header-actions">
-      <a class="icon-btn" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
+      <a class="icon-btn hide-mobile" href="https://nportal.ntut.edu.tw" target="_blank" title="校園入口網站">
         <div class="icon portal"></div>
       </a>
-      <a class="icon-btn hide-compact" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
+      <a class="icon-btn hide-compact hide-mobile" href="https://github.com/NTUT-NPC/ntut-sso-plus" target="_blank" title="GitHub 專案">
         <div class="icon github"></div>
       </a>
       <button class="icon-btn" title="開啟分頁" @click="openInNewTab">
         <div class="icon external-link"></div>
       </button>
-      <button class="icon-btn hide-compact" title="視窗模式" @click="openInNewWindow">
+      <button class="icon-btn hide-compact hide-mobile" title="視窗模式" @click="openInNewWindow">
         <div class="icon maximize"></div>
       </button>
-      <button class="icon-btn hide-compact" title="側邊欄模式" @click="openInSidebar">
+      <button class="icon-btn hide-compact hide-mobile" title="側邊欄模式" @click="openInSidebar">
         <div class="icon sidebar"></div>
       </button>
       <button v-if="showLogout" class="icon-btn" title="QR 掃碼登入" @click="openQrLogin">
