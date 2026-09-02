@@ -370,7 +370,7 @@ function getServiceName(code: string): string {
     <div v-if="currentStep === 'sending'" class="glass-card result-card animate-fade-in">
       <div class="result-icon spin">🔒</div>
       <div class="result-title">正在加密並傳送授權...</div>
-      <div class="result-subtitle">使用 AES-256-CBC 端對端加密，安全傳送至電腦端</div>
+      <div class="result-subtitle">使用 AES-256-GCM 端對端加密，安全傳送至電腦端</div>
     </div>
 
     <!-- ========== SUCCESS ========== -->
@@ -396,10 +396,64 @@ function getServiceName(code: string): string {
         <button class="modern-btn" @click="retryService">重試</button>
       </div>
     </div>
+
+    <!-- ========== Security Intro ========== -->
+    <div class="glass-card security-intro">
+      <h3 class="security-title">🔒 安全與隱私聲明</h3>
+      <ul class="security-list">
+        <li><strong>端到端加密 (E2EE)：</strong>傳送至電腦的授權網址皆在您的手機端以 <strong>AES-256-GCM</strong> 高強度加密。</li>
+        <li><strong>零知識架構：</strong>解密金鑰僅透過掃描 QR Code 傳遞，絕不經由網路傳輸，中繼伺服器完全無法解密。</li>
+        <li><strong>絕不傳送密碼：</strong>過程中您的帳號與密碼皆保留在手機端，絕不會上傳至任何網路伺服器。</li>
+        <li><strong>閱後即焚：</strong>電腦端一接收到授權，該筆資料即刻從伺服器永久刪除。</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* Security Intro */
+.security-intro {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-md);
+  background: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+:global(body[data-theme="dark"]) .security-intro {
+  background: rgba(35, 134, 54, 0.1);
+  border-color: rgba(35, 134, 54, 0.3);
+}
+
+.security-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--success);
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.security-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.security-list li {
+  margin-bottom: 6px;
+}
+.security-list li:last-child {
+  margin-bottom: 0;
+}
+
+.security-list strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
 /* Step completed checkmark */
 .step-dot.completed::after {
   content: '✓';
