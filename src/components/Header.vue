@@ -8,13 +8,13 @@ defineProps<{
 const emit = defineEmits(['logout']);
 
 const openInNewTab = () => {
-  browser.tabs.create({ url: (browser.runtime as any).getURL('/popup.html') });
+  browser.tabs.create({ url: browser.runtime.getURL('/popup.html') });
   window.close();
 };
 
 const openInNewWindow = () => {
   browser.windows.create({
-    url: (browser.runtime as any).getURL('/popup.html'),
+    url: browser.runtime.getURL('/popup.html'),
     type: 'popup',
     width: 720,
     height: 640,
@@ -42,7 +42,8 @@ const handleLogout = () => {
 };
 
 const openQrLogin = () => {
-  browser.tabs.create({ url: (browser.runtime as any).getURL('/qr-login.html') });
+  browser.tabs.create({ url: browser.runtime.getURL('/qr-login.html') });
+  window.close();
 };
 </script>
 

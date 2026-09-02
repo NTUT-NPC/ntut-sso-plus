@@ -68,6 +68,7 @@ export default defineBackground(() => {
             (async () => {
                 let capturedUrl: string | null = null;
                 const listener = (details: any): any => {
+                    if (details.url !== actionUrl) return undefined;
                     const locationHeader = details.responseHeaders?.find((h: any) => h.name.toLowerCase() === 'location');
                     if (locationHeader) {
                         capturedUrl = locationHeader.value;
@@ -75,13 +76,14 @@ export default defineBackground(() => {
                     return undefined;
                 };
                 
-                browser.webRequest.onHeadersReceived.addListener(
-                    listener,
-                    { urls: ["<all_urls>"] },
-                    ['responseHeaders']
-                );
-                
                 try {
+                    const actionUrlObj = new URL(actionUrl);
+                    browser.webRequest.onHeadersReceived.addListener(
+                        listener,
+                        { urls: [`${actionUrlObj.origin}/*`] },
+                        ['responseHeaders']
+                    );
+
                     const body = new URLSearchParams(formData);
                     await fetch(actionUrl, {
                         method: 'POST',

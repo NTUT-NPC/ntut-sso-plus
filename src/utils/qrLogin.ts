@@ -5,7 +5,7 @@
  * Ciphertext format: "base64(IV):base64(ciphertext)" — compatible with pc.html CryptoJS decryption.
  */
 
-export const FIREBASE_DB_URL = 'https://nportal-qr-login-default-rtdb.europe-west1.firebasedatabase.app';
+export const API_BASE_URL = 'https://login.ntut.app/api/session';
 
 const FETCH_TIMEOUT_MS = 8000;
 const MAX_RETRIES = 2;
@@ -32,6 +32,11 @@ export function parseQrPayload(raw: string): QrPayload {
         throw new Error('QR 內容缺少有效的 "id" 欄位');
     }
 
+    const trimmedId = parsed.id.trim();
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(trimmedId)) {
+        throw new Error('"id" 格式不正確（應為 UUID）');
+    }
+
     if (!parsed.key || typeof parsed.key !== 'string' || parsed.key.trim() === '') {
         throw new Error('QR 內容缺少有效的 "key" 欄位');
     }
@@ -41,7 +46,7 @@ export function parseQrPayload(raw: string): QrPayload {
         throw new Error('"key" 格式不正確（應為 Base64 編碼）');
     }
 
-    return { id: parsed.id, key: parsed.key };
+    return { id: trimmedId, key: parsed.key };
 }
 
 /**
@@ -93,7 +98,12 @@ export async function aesEncryptCBC(plaintext: string, base64Key: string): Promi
  * Send encrypted payload to Firebase via HTTP PUT with timeout and retry.
  */
 export async function sendToFirebase(sessionId: string, encryptedPayload: string): Promise<void> {
-    const url = `${FIREBASE_DB_URL}/sessions/${sessionId}.json`;
+    const trimmedSessionId = sessionId.trim();
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(trimmedSessionId)) {
+        throw new Error('無效的 sessionId');
+    }
+
+    const url = `${API_BASE_URL}/${trimmedSessionId}`;
     const body = JSON.stringify({
         payload: encryptedPayload,
         timestamp: Date.now()

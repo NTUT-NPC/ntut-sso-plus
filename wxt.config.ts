@@ -8,7 +8,7 @@ export default defineConfig({
   modules: ["@wxt-dev/module-vue"],
   vite: () => ({
     optimizeDeps: {
-      entries: ["src/entrypoints/popup/index.html"],
+      entries: ["src/entrypoints/popup/index.html", "src/entrypoints/qr-login/index.html"],
     },
   }),
   manifest: (env) => ({
@@ -29,7 +29,7 @@ export default defineConfig({
     },
     host_permissions: [
       "https://*.ntut.edu.tw/*",
-      "https://*.firebasedatabase.app/*",
+      "https://*.ntut.app/*",
     ],
     homepage_url: "https://github.com/NTUT-NPC/ntut-sso-plus",
     icons: {
