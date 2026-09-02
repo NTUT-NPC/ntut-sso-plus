@@ -50,15 +50,15 @@ export function parseQrPayload(raw: string): QrPayload {
 }
 
 /**
- * AES-256-CBC encryption using Web Crypto API.
+ * AES-256-GCM encryption using Web Crypto API.
  *
- * - Generates a random 128-bit IV
+ * - Generates a random 96-bit IV (12 bytes)
  * - Parses Base64-encoded 32-byte key
- * - Output format: "base64(IV):base64(ciphertext)"
+ * - Output format: "base64(IV):base64(ciphertext_with_tag)"
  *
- * Compatible with pc.html CryptoJS AES-CBC decryption.
+ * Compatible with Web Crypto API AES-GCM decryption.
  */
-export async function aesEncryptCBC(plaintext: string, base64Key: string): Promise<string> {
+export async function aesEncryptGCM(plaintext: string, base64Key: string): Promise<string> {
     // Decode the Base64 key to raw bytes
     const keyBytes = Uint8Array.from(atob(base64Key), c => c.charCodeAt(0));
     if (keyBytes.length !== 32) {
@@ -69,20 +69,20 @@ export async function aesEncryptCBC(plaintext: string, base64Key: string): Promi
     const cryptoKey = await crypto.subtle.importKey(
         'raw',
         keyBytes,
-        { name: 'AES-CBC', length: 256 },
+        { name: 'AES-GCM', length: 256 },
         false,
         ['encrypt']
     );
 
-    // Generate random 128-bit IV
-    const iv = crypto.getRandomValues(new Uint8Array(16));
+    // Generate random 96-bit IV (12 bytes recommended for GCM)
+    const iv = crypto.getRandomValues(new Uint8Array(12));
 
     // Encode plaintext to UTF-8
     const data = new TextEncoder().encode(plaintext);
 
-    // Encrypt (Web Crypto AES-CBC uses PKCS7 padding by default)
+    // Encrypt (Web Crypto AES-GCM automatically appends auth tag)
     const cipherBuffer = await crypto.subtle.encrypt(
-        { name: 'AES-CBC', iv },
+        { name: 'AES-GCM', iv },
         cryptoKey,
         data
     );

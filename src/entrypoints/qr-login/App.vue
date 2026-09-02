@@ -4,7 +4,7 @@ import { browser } from 'wxt/browser';
 import jsQR from 'jsqr';
 import { SERVICES } from '@/utils/constants';
 import { getSsoUrl } from '@/utils/sso';
-import { parseQrPayload, aesEncryptCBC, sendToFirebase } from '@/utils/qrLogin';
+import { parseQrPayload, aesEncryptGCM, sendToFirebase } from '@/utils/qrLogin';
 import type { QrPayload } from '@/utils/qrLogin';
 
 // ============================================================
@@ -186,9 +186,9 @@ async function handleServiceSelect(code: string, name: string) {
         // Step 1: Get SSO URL (no tab navigation)
         const ssoUrl = await getSsoUrl(code);
 
-        // Step 2: Encrypt with AES-256-CBC
+        // Step 2: Encrypt with AES-256-GCM
         // ⚠️ SECURITY: ssoUrl is never logged or displayed
-        const encrypted = await aesEncryptCBC(ssoUrl, qrPayload.value.key);
+        const encrypted = await aesEncryptGCM(ssoUrl, qrPayload.value.key);
 
         // Step 3: Send to Firebase
         currentStep.value = 'sending';
