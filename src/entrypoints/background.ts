@@ -70,8 +70,8 @@ export default defineBackground(() => {
                 const listener = (details: any): any => {
                     if (details.url !== actionUrl) return undefined;
                     const locationHeader = details.responseHeaders?.find((h: any) => h.name.toLowerCase() === 'location');
-                    if (locationHeader) {
-                        capturedUrl = locationHeader.value;
+                    if (locationHeader?.value) {
+                        capturedUrl = new URL(locationHeader.value, details.url).href;
                     }
                     return undefined;
                 };
