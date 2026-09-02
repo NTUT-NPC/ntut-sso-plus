@@ -8,13 +8,13 @@ defineProps<{
 const emit = defineEmits(['logout']);
 
 const openInNewTab = () => {
-  browser.tabs.create({ url: (browser.runtime as any).getURL('/popup.html') });
+  browser.tabs.create({ url: browser.runtime.getURL('/popup.html') });
   window.close();
 };
 
 const openInNewWindow = () => {
   browser.windows.create({
-    url: (browser.runtime as any).getURL('/popup.html'),
+    url: browser.runtime.getURL('/popup.html'),
     type: 'popup',
     width: 720,
     height: 640,
@@ -40,6 +40,11 @@ const openInSidebar = async () => {
 const handleLogout = () => {
   emit('logout');
 };
+
+const openQrLogin = () => {
+  browser.tabs.create({ url: browser.runtime.getURL('/qr-login.html') });
+  window.close();
+};
 </script>
 
 <template>
@@ -63,6 +68,9 @@ const handleLogout = () => {
       </button>
       <button class="icon-btn hide-compact" title="側邊欄模式" @click="openInSidebar">
         <div class="icon sidebar"></div>
+      </button>
+      <button v-if="showLogout" class="icon-btn" title="QR 掃碼登入" @click="openQrLogin">
+        <div class="icon qr-scan"></div>
       </button>
       <button v-if="showLogout" class="modern-btn sm" @click="handleLogout">登出</button>
     </div>
@@ -170,6 +178,11 @@ header {
 .sidebar {
   mask-image: url('/icons/sidebar.svg');
   -webkit-mask-image: url('/icons/sidebar.svg');
+}
+
+.qr-scan {
+  mask-image: url('/icons/qr-scan.svg');
+  -webkit-mask-image: url('/icons/qr-scan.svg');
 }
 
 .modern-btn.sm {
